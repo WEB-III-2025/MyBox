@@ -1,22 +1,29 @@
 <?php
-	//Inicio la sesión
-	session_start();
-
-	//Utiliza los datos de sesion comprueba que el usuario este autenticado
-	if ($_SESSION["autenticado"] != "SI") {
-		header("Location: ../index.php");
-		exit(); //fin del script
-	}
-
-	//declara ruta carpeta del usuario
-	$ruta = "d:\\mybox";
-	$ruta = $ruta.'/'.$_SESSION["usuario"];
-
-	if(!mkdir($ruta,0700)){
-		echo 'ERROR:\\ NO se pudo crear directorio para almacenar archivos.<br>';
-		echo 'Favor pongase en contacto con el departamento de servicio al cliente.<br>';
-        echo 'Ruta.....'.$ruta;
-    }else{
-		header("Location: ../carpetas.php");
-	} // fin del if del mkdir
+session_start();
+if ($_SESSION["autenticado"] != "SI") {
+    header("Location: /mybox/index.php");
+    exit();
+}
+$ruta = "C:\\myboxusers\\" . $_SESSION["usuario"];
+if (isset($_POST['create_folder']) && isset($_POST['new_folder'])) {
+    $new_folder = trim($_POST['new_folder']);
+    $sub_ruta = $ruta . '\\' . $new_folder;
+    if (!file_exists($sub_ruta)) {
+        if (mkdir($sub_ruta, 0700)) {
+            header("Location: /mybox/carpetas.php");
+        } else {
+            echo "Error al crear la carpeta.";
+        }
+    } else {
+        echo "La carpeta ya existe.";
+    }
+} elseif (!file_exists($ruta)) {
+    if (!mkdir($ruta, 0700)) {
+        echo "ERROR: NO se pudo crear directorio.<br>";
+    } else {
+        header("Location: /mybox/carpetas.php");
+    }
+} else {
+    header("Location: /mybox/carpetas.php");
+}
 ?>
