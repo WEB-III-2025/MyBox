@@ -4,8 +4,10 @@ if ($_SESSION["autenticado"] != "SI") {
     header("Location: /mybox/index.php");
     exit();
 }
-$ruta = "d:\\myboxusers\\" . $_SESSION["usuario"];
-$Accion_Formulario = $_SERVER['PHP_SELF'];
+$ruta_base = "C:\\myboxusers\\" . $_SESSION["usuario"]; // Ajustado a tu notación con C:
+$folder = isset($_GET['folder']) ? $_GET['folder'] : '';
+$ruta = $ruta_base . '\\' . $folder;
+$Accion_Formulario = $_SERVER['PHP_SELF'] . ($folder ? '?folder=' . urlencode($folder) : '');
 
 // Verificar si se envió un archivo y validar su tamaño antes de procesar
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["OC_Aceptar"]) && $_POST["OC_Aceptar"] == "frmArchi") {
@@ -17,22 +19,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["OC_Aceptar"]) && $_PO
         // Validar tamaño (20 MB = 20 * 1024 * 1024 bytes)
         if ($tamanio > 20 * 1024 * 1024) {
             $mensaje = "Error: El archivo supera los 20 MB de subida. Por favor, seleccione un archivo más pequeño.";
-            include 'mensaje.php'; // Asumimos que crearemos un archivo para mostrar el mensaje
+            include 'mensaje.php';
             exit();
         }
 
+        // Crear la carpeta si no existe
         if (!file_exists($ruta)) {
             mkdir($ruta, 0700, true);
         }
-        move_uploaded_file($_FILES['txtArchi']['tmp_name'], $ruta . '/' . $Sali);
-        if (chmod($ruta . '/' . $Sali, 0644)) {
-            header("Location: /mybox/carpetas.php");
+        $full_path = $ruta . '/' . $Sali;
+        move_uploaded_file($_FILES['txtArchi']['tmp_name'], $full_path);
+        if (chmod($full_path, 0644)) {
+            header("Location: /mybox/carpetas.php" . ($folder ? '?folder=' . urlencode($folder) : ''));
             exit();
         } else {
             echo 'No se pudo cambiar los permisos, consulte a su administrador';
         }
     } else {
-        // Manejar errores de subida (como tamaño excesivo antes de procesar)
+        // Manejar errores de subida
         switch ($_FILES['txtArchi']['error']) {
             case UPLOAD_ERR_INI_SIZE:
             case UPLOAD_ERR_FORM_SIZE:
@@ -96,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["OC_Aceptar"]) && $_PO
 </html>
 
 <?php
-// Archivo mensaje.php (crea este archivo en C:\xampp\htdocs\mybox\)
+// Archivo mensaje.php (asegúrate de que existe en C:\xampp\htdocs\mybox\)
 if (isset($mensaje)) {
     echo '<div style="color: red; text-align: center; margin-top: 20px;">' . htmlspecialchars($mensaje) . '</div>';
 }

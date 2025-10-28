@@ -8,7 +8,7 @@ if ($_SESSION["autenticado"] != "SI") {
 $ruta_base = "C:\\myboxusers\\" . $_SESSION["usuario"];
 $folder = isset($_GET['folder']) ? $_GET['folder'] : '';
 $ruta = $ruta_base . '\\' . $folder;
-$datos = explode('\\', "d:\\myboxusers");
+$datos = explode('\\', "C:\\myboxusers");
 ?>
 <!doctype html>
 <html>
@@ -53,7 +53,7 @@ $datos = explode('\\', "d:\\myboxusers");
                 $conta = 0;
                 $directorio = opendir($ruta);
                 echo '<a href="/mybox/carpetas.php' . ($folder ? '?folder=' . dirname($folder) : '') . '">Regresar</a><br><br>';
-                echo '<a href="/mybox/agrearchi.php">' . 'Agregar archivo' . '</a>';
+                echo '<a href="/mybox/agrearchi.php' . ($folder ? '?folder=' . urlencode($folder) : '') . '">' . 'Agregar archivo' . '</a>';
                 echo '<br><br>';
                 echo '<table class="table table-striped">';
                 echo '<tr>';
@@ -119,14 +119,18 @@ $datos = explode('\\', "d:\\myboxusers");
                     echo 'La carpeta del usuario se encuentra vacía';
                 }
                 // Mostrar archivos compartidos
-                $sql = "SELECT item_name, item_type FROM shares WHERE shared_with = ?";
+                $sql = "SELECT item_name, item_type, owner FROM shares WHERE shared_with = ?";
                 $stmt = mysqli_prepare($conex, $sql);
                 mysqli_stmt_bind_param($stmt, 's', $_SESSION["usuario"]);
                 mysqli_stmt_execute($stmt);
-                mysqli_stmt_bind_result($stmt, $item_name, $item_type);
+                mysqli_stmt_bind_result($stmt, $item_name, $item_type, $owner);
                 echo '<div class="panel panel-info"><div class="panel-heading"><strong>Archivos Compartidos</strong></div><div class="panel-body">';
                 while (mysqli_stmt_fetch($stmt)) {
-                    echo '<p>' . $item_name . ' (' . $item_type . ') - Compartido por ' . $item_type . '</p>';
+                    if ($item_type == 'folder') {
+                        echo '<p><a href="/mybox/carpetas.php?shared_folder=' . urlencode($item_name) . '&owner=' . urlencode($owner) . '">' . $item_name . ' (Carpeta)</a> - Compartido por ' . $owner . '</p>';
+                    } elseif ($item_type == 'file') {
+                        echo '<p><a href="/mybox/abrArchi.php?shared_arch=' . urlencode($item_name) . '&owner=' . urlencode($owner) . '">' . $item_name . ' (Archivo)</a> - Compartido por ' . $owner . '</p>';
+                    }
                 }
                 echo '</div></div>';
                 mysqli_stmt_close($stmt);
