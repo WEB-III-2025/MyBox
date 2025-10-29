@@ -55,6 +55,7 @@ git clone https://github.com/WEB-III-2025/MyBox.git
  - Asegurarse de que el archivo `.htaccess` en la raíz del proyecto contiene las reglas necesarias para la restricción de acceso por IP.
 ### 5. Crear el directorio de almacenamiento
     - Crear la carpeta `C:\\myboxusers\\` para almacenar los archivos subidos.
+   # Nota: Asegurarse de que uses el disco correcto y que la ruta exista en tu sistema.
 ### 6. Acceder al sistema
  - Abrir el navegador y navegar a `http://localhost/MyBox/`.
  - Iniciar sesión con las credenciales proporcionadas o registrarse si es necesario.
@@ -65,3 +66,22 @@ git clone https://github.com/WEB-III-2025/MyBox.git
 - Borrar archivos y carpetas según sea necesario.
 ## Video Demostrativo
 - El video está adjunto en el repositorio como `MyBox_Demo.mp4`.
+## Estructura del Proyecto
+mybox/
+├── carpetas.php           ← Navegación, crear, borrar, compartir
+├── agrearchi.php          ← Subir archivo en subcarpeta
+├── abrArchi.php           ← Ver/descargar (solo PDF, JPG, PNG)
+├── share.php              ← Compartir con validación de usuario
+├── index.php              ← Login
+├── .htaccess              ← 20MB + restricción IP
+├── codigos/
+│   ├── conexion.inc       ← Conexión a BD
+│   ├── creardir.php       ← Crear carpeta
+│   ├── borrarcarpeta.php  ← Borrar carpeta
+│   └── borarchi.php       ← Borrar archivo
+├── partes/
+│   ├── encabe.inc
+│   ├── menu.inc
+│   └── final.inc
+└── imagenes/
+    └── encabe.png
