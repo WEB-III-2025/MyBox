@@ -34,7 +34,7 @@ ErrorDocument 500 /mybox/errores/500.php
 </IfModule>
 
 # Restringir acceso a 3 terminales del laboratorio (desactivado para pruebas locales)
-# Reemplaza IP1, IP2, IP3 con las IPs reales del laboratorio cuando lo actives
+# Reemplazar IP1, IP2, IP3 con las IPs reales del laboratorio.
 #<IfModule mod_authz_core.c>
 #    <RequireAny>
 #        Require ip 192.168.1.10 192.168.1.11 192.168.1.12

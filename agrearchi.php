@@ -100,8 +100,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["OC_Aceptar"]) && $_PO
 </html>
 
 <?php
-// Archivo mensaje.php (asegúrate de que existe en C:\xampp\htdocs\mybox\)
-if (isset($mensaje)) {
-    echo '<div style="color: red; text-align: center; margin-top: 20px;">' . htmlspecialchars($mensaje) . '</div>';
-}
-?>
+
+// Nota: El manejo de errores y mensajes se realiza incluyendo el archivo mensaje.php cuando es necesario.

@@ -12,14 +12,16 @@ create table usuarios (
 ) engine=innodb charset=utf8mb4;
 
 CREATE TABLE shares (
-    id INT AUTO_INCREMENT PRIMARY KEY,
     owner VARCHAR(15) NOT NULL,
+    shared_with VARCHAR(50) NOT NULL,
     item_name VARCHAR(255) NOT NULL,
     item_type ENUM('file', 'folder') NOT NULL,
-    shared_with VARCHAR(15) NOT NULL,
+    PRIMARY KEY (owner, shared_with, item_name, item_type),
     FOREIGN KEY (owner) REFERENCES usuarios(usuario),
     FOREIGN KEY (shared_with) REFERENCES usuarios(usuario)
 ) ENGINE=InnoDB CHARSET=utf8mb4;
+
+ALTER TABLE shares ADD COLUMN id INT AUTO_INCREMENT UNIQUE FIRST;
 
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -31,3 +33,8 @@ SET FOREIGN_KEY_CHECKS = 1;
 select * from usuarios;
 
 select * from shares;
+
+drop table usuarios;
+drop table sheres;
+
+drop database mybox;
