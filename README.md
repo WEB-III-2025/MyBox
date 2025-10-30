@@ -65,7 +65,7 @@ git clone https://github.com/WEB-III-2025/MyBox.git
 - Visualizar archivos y carpetas compartidas en la sección correspondiente.
 - Borrar archivos y carpetas según sea necesario.
 ## Video Demostrativo
-- El video está adjunto en el repositorio como `MyBox_Demo.mp4`.
+- El video está adjunto en el repositorio como doc txt llamado `Video-demostrativo.txt`, ya que el mismo, supera 300 MB.
 ## Estructura del Proyecto
 mybox/
 ├── carpetas.php           ← Navegación, crear, borrar, compartir
